@@ -34,7 +34,7 @@ jobs:
       - name: Build and push pymoab Docker image
         uses: docker/build-push-action@v2
         with:
-          file: CI/Dockerfile
+          file: CI/Dockerfile_0_base
           context: .
           push: true
           build-args: |
