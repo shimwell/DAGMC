@@ -89,5 +89,13 @@ jobs:
             MOAB=${{ matrix.moab_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
 
-
+    - name: Build and push Dockerfile_1_housekeeping
+      uses: docker/build-push-action@v2
+      with:
+        file: CI/Dockerfile_1_housekeeping
+        context: .
+        push: true
+        build-args: |
+          UBUNTU_VERSION=18.04
+        tags: ghcr.io/shimwell/dagmc-ci-ubuntu-18.04-housekeeping
     
