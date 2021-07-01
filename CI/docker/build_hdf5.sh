@@ -26,7 +26,8 @@ fi
 
 tar -xzf hdf5-${HDF5_VERSION}.tar.gz
 echo ${hdf5_build_dir}
-ll ${hdf5_build_dir}
+ls
+ls ${hdf5_build_dir}
 cd bld
 ../hdf5-${HDF5_VERSION}/configure --enable-shared \
                  --prefix=${hdf5_install_dir} \
