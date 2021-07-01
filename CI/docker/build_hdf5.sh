@@ -25,7 +25,8 @@ if [ $hdf5_1_10_4_shasum != $tar_chashum ]; then
 fi
 
 tar -xzf hdf5-${HDF5_VERSION}.tar.gz
-mkdir bld
+echo ${hdf5_build_dir}
+ll ${hdf5_build_dir}
 cd bld
 ../hdf5-${HDF5_VERSION}/configure --enable-shared \
                  --prefix=${hdf5_install_dir} \
