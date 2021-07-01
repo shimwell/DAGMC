@@ -19,6 +19,10 @@ RUN apt-get -y update; \
 # Copy scripts to docker image
 RUN mkdir -p /root/etc/
 COPY CI/ /root/etc/CI
+RUN pwd
+RUN ls
+RUN ls /root/etc/
+RUN ls /root/etc/CI
 ENV docker_env=/root/etc/CI/env.sh
 
 # Build HDF5 then Geant4 then MOAB 5.1.0
