@@ -20,6 +20,9 @@ jobs:
           gcc,
           clang,
           ]
+       hdf5_versions : [
+         1.10.4,
+       ]
 
     steps:
       - name: Checkout repository
@@ -35,7 +38,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push pymoab Docker image
+      - name: Build and push Dockerfile_0_base
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_0_base
@@ -44,9 +47,8 @@ jobs:
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
-          # tags: ghcr.io/svalinn/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
-      - name: Build and push pymoab Docker image
+      - name: Build and push Dockerfile_1_external_deps
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_1_external_deps
@@ -56,6 +58,18 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
             COMPILER=${{ matrix.compiler }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext
-          # tags: ghcr.io/svalinn/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
+
+      - name: Build and push Dockerfile_2_hdf5
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/Dockerfile_2_hdf5
+          context: .
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+            HDF5=${{ matrix.hdf5_versions }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
+
 
     
