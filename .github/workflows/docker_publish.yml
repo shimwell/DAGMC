@@ -33,6 +33,7 @@ jobs:
           file: CI/Dockerfile
           context: .
           push: true
+          # TODO build args UBUNTU_VERSION
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
           # tags: ghcr.io/svalinn/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
