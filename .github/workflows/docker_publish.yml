@@ -44,9 +44,41 @@ jobs:
 
         # if: success()
 
-    # strategy:
-    #   matrix:
-    #    compiler : [
-    #       gcc,
-    #       clang,
-    #       ]
+    strategy:
+      matrix:
+       compiler : [
+          gcc,
+          clang,
+          ]
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push pymoab Docker image
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/Dockerfile_1_external_deps
+          context: .
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext
+          # tags: ghcr.io/svalinn/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
+
+    
