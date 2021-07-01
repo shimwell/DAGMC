@@ -23,6 +23,11 @@ jobs:
        hdf5_versions : [
          1.10.4,
        ]
+       moab_versions : [
+         9c96d17,
+         develop,
+         master,
+       ]
 
     steps:
       - name: Checkout repository
@@ -70,6 +75,19 @@ jobs:
             COMPILER=${{ matrix.compiler }}
             HDF5=${{ matrix.hdf5_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
+
+      - name: Build and push Dockerfile_3_moab
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/Dockerfile_3_moab
+          context: .
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+            HDF5=${{ matrix.hdf5_versions }}
+            MOAB=${{ matrix.moab_versions }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
 
 
     
