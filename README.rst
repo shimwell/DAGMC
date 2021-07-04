@@ -14,8 +14,7 @@ Phits_, and FRENSIE_.
 
 DAGMC currently relies on using the commercial solid modeling software Cubit_ (or its
 `government-use counterpart <https://cubit.sandia.gov>`_ available from 
-Sandia National Laboratories)
-to prepare solid models. These packages can be
+Sandia National Laboratories) to prepare solid models. These packages can be
 used to import CAD models from other tools such as SolidWorks, CATIA, etc., or
 to create geometry from scratch. DAGMC also relies on Cubit to assign
 materials and other geometry-related information.
