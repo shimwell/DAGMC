@@ -3,7 +3,6 @@ ARG COMPILER=gcc
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext
 
 
-
 # Set HDF5 env variable
 ENV hdf5_build_dir=${build_dir}/hdf5
 ENV hdf5_install_dir=${install_dir}/hdf5

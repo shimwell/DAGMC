@@ -3,4 +3,3 @@ FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}
 
 RUN pip install sphinx; \
     apt-get -y install astyle
-

@@ -3,7 +3,8 @@ on:
   #   branches: ['gh_actions_and_ghcr_for_docker']  # todo replace with main once we know this is working
   push:
     paths:
-      - 'CI'
+      - 'CI/*'
+
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
