@@ -1,6 +1,4 @@
 on:
-  # push:
-  #   branches: ['gh_actions_and_ghcr_for_docker']  # todo replace with main once we know this is working
   push:
     paths:
       - 'CI/*'
@@ -12,28 +10,6 @@ jobs:
     env:
       hdf5_versions: 1.10.4
       hdf5_build_dir: hdf5_build_dir
-
-    strategy:
-      matrix:
-       ubuntu_versions : [
-          16.04,
-          18.04,
-          ]
-       compiler : [
-          gcc,
-          clang,
-          ]
-       hdf5_versions : [
-         1.10.4,
-       ]
-       moab_versions : [
-         9c96d17,
-         develop,
-         master,
-       ]
-
-
-
 
     steps:
       - name: Checkout repository
@@ -49,44 +25,47 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Dockerfile_0_base
-        uses: docker/build-push-action@v2
-        with:
-          file: CI/Dockerfile_0_base
-          context: .
-          push: true
-          build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
+    strategy:
+      matrix:
 
-      - name: Build and push Dockerfile_1_external_deps
-        uses: docker/build-push-action@v2
-        with:
-          file: CI/Dockerfile_1_external_deps
-          context: .
-          push: true
-          build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-            COMPILER=${{ matrix.compiler }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext
+      # include:
+      #   - ubuntu_versions: 16.04
+      #     targets: base
 
-      - name: Build and push Dockerfile_2_hdf5
-        uses: docker/build-push-action@v2
-        with:
-          file: CI/Dockerfile_2_hdf5
-          context: .
-          push: true
-          build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-            COMPILER=${{ matrix.compiler }}
-            HDF5=${{ matrix.hdf5_versions }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+       targets : [
+         base,
+       ]
+      #  compiler : [
+      #     gcc,
+      #     clang,
+      #     ]
+      #  hdf5_versions : [
+      #    1.10.4,
+      #  ]
+      #  moab_versions : [
+      #    9c96d17,
+      #    develop,
+      #    master,
+      #  ]
+      #  targets : [
+      #    base,
+      #    external_deps,
+      #    hdf5,
+      #    moab,
+      #  ]
 
+
+    steps:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
         with:
-          file: CI/Dockerfile_3_moab
+          file: CI/all.Dockerfile
           context: .
+          target: ${{ matrix.targets }}
           push: true
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
@@ -95,13 +74,51 @@ jobs:
             MOAB=${{ matrix.moab_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
 
-      - name: Build and push Dockerfile_1_housekeeping
+
+    strategy:
+      matrix:
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+       compiler : [
+          gcc,
+          clang,
+          ]
+       targets : [
+         external_deps,
+       ]
+
+    steps:
+      - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
         with:
-          file: CI/Dockerfile_1_housekeeping
+          file: CI/all.Dockerfile
           context: .
+          target: ${{ matrix.targets }}
           push: true
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-housekeeping
+            COMPILER=${{ matrix.compiler }}
+            HDF5=${{ matrix.hdf5_versions }}
+            MOAB=${{ matrix.moab_versions }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
+
+
+
+
+
+
+
+
+
+      # - name: Build and push Dockerfile_1_housekeeping
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     file: CI/Dockerfile_1_housekeeping
+      #     context: .
+      #     push: true
+      #     build-args: |
+      #       UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+      #     tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-housekeeping
       
