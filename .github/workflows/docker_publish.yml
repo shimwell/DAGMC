@@ -184,6 +184,8 @@ jobs:
 
 
   build_and_push_image_5:
+    runs-on: ubuntu-latest
+      steps:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
