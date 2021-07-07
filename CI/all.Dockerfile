@@ -1,5 +1,5 @@
 ARG UBUNTU_VERSION=18.04
-ARG COMPILER=gcc
+RUN echo UBUNTU_VERSION=$UBUNTU_VERSION
 
 FROM ubuntu:${UBUNTU_VERSION} as base
 
@@ -26,8 +26,8 @@ ENV install_dir=/root/opt
 
 # FROM base as external_deps  # TODO looking into docker layer caching
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION} as external_deps 
-
-
+ARG COMPILER=gcc
+RUN echo COMPILER=$COMPILER
 LABEL COMPILER=$COMPILER
 
 #setting the COMPILER variable
@@ -51,6 +51,7 @@ RUN /root/etc/CI/docker/build_embree.sh
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext as hdf5
 
 ARG HDF5=1.10.4
+RUN echo HDF5=$HDF5
 LABEL HDF5=$HDF5
 
 # Set HDF5 env variable
@@ -69,6 +70,7 @@ FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext-hdf5_${H
 
 # MOAB Commit: 9c96d17 (Merged commit of @pshriwise thread fix)
 ARG MOAB=9c96d17
+RUN echo MOAB=$MOAB
 LABEL MOAB=$MOAB
 
 # Set MOAB env variable
