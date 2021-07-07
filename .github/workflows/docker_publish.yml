@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build_and_push_image_0:
+  build_and_push_housekeeping:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -41,7 +41,7 @@ jobs:
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-housekeeping
       
 
-  build_and_push_image_1:
+  build_and_push_base:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -77,9 +77,9 @@ jobs:
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
 
-  build_and_push_image_2:
+  build_and_push_external_deps:
     runs-on: ubuntu-latest
-    needs: build_and_push_image_1
+    needs: build_and_push_base
     strategy:
       matrix:
         ubuntu_versions : [
@@ -119,9 +119,9 @@ jobs:
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext
 
 
-  build_and_push_image_3:
+  build_and_push_hdf5:
     runs-on: ubuntu-latest
-    needs: build_and_push_image_2
+    needs: build_and_push_external_deps
     strategy:
       matrix:
         ubuntu_versions : [
@@ -165,9 +165,9 @@ jobs:
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
 
 
-  build_and_push_image_4:
+  build_and_push_moab:
     runs-on: ubuntu-latest
-    needs: build_and_push_image_3
+    needs: build_and_push_hdf5
     strategy:
       matrix:
         ubuntu_versions : [
