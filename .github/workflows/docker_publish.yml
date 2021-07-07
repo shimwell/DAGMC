@@ -193,18 +193,3 @@ jobs:
             HDF5=${{ matrix.hdf5_versions }}
             MOAB=${{ matrix.moab_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
-
-
-  build_and_push_image_5:
-    runs-on: ubuntu-latest
-      # steps:
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          file: CI/Dockerfile_1_housekeeping
-          context: .
-          push: true
-          build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-housekeeping
-      
