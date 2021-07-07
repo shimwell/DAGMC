@@ -11,6 +11,32 @@ jobs:
       hdf5_versions: 1.10.4
       hdf5_build_dir: hdf5_build_dir
 
+
+    strategy:
+      matrix:
+
+      # include:
+      #   - ubuntu_versions: 16.04
+      #     targets: base
+
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+       compiler : [
+          gcc,
+          clang,
+          ]
+       hdf5_versions : [
+         1.10.4,
+       ]
+       moab_versions : [
+         9c96d17,
+         develop,
+         master,
+       ]
+
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -25,38 +51,43 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-    strategy:
-      matrix:
+      - name: Build and push Dockerfile_3_moab
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/all.Dockerfile
+          context: .
+          target: base
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
-      # include:
-      #   - ubuntu_versions: 16.04
-      #     targets: base
+    steps:
+      - name: Build and push Dockerfile_3_moab
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/all.Dockerfile
+          context: .
+          target: external_deps
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
 
-       ubuntu_versions : [
-          16.04,
-          18.04,
-          ]
-       targets : [
-         base,
-       ]
-      #  compiler : [
-      #     gcc,
-      #     clang,
-      #     ]
-      #  hdf5_versions : [
-      #    1.10.4,
-      #  ]
-      #  moab_versions : [
-      #    9c96d17,
-      #    develop,
-      #    master,
-      #  ]
-      #  targets : [
-      #    base,
-      #    external_deps,
-      #    hdf5,
-      #    moab,
-      #  ]
+    steps:
+      - name: Build and push Dockerfile_3_moab
+        uses: docker/build-push-action@v2
+        with:
+          file: CI/all.Dockerfile
+          context: .
+          target: hdf5
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+            HDF5=${{ matrix.hdf5_versions }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
 
 
     steps:
@@ -65,7 +96,7 @@ jobs:
         with:
           file: CI/all.Dockerfile
           context: .
-          target: ${{ matrix.targets }}
+          target: moab
           push: true
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
@@ -73,42 +104,6 @@ jobs:
             HDF5=${{ matrix.hdf5_versions }}
             MOAB=${{ matrix.moab_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
-
-
-    strategy:
-      matrix:
-       ubuntu_versions : [
-          16.04,
-          18.04,
-          ]
-       compiler : [
-          gcc,
-          clang,
-          ]
-       targets : [
-         external_deps,
-       ]
-
-    steps:
-      - name: Build and push Dockerfile_3_moab
-        uses: docker/build-push-action@v2
-        with:
-          file: CI/all.Dockerfile
-          context: .
-          target: ${{ matrix.targets }}
-          push: true
-          build-args: |
-            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-            COMPILER=${{ matrix.compiler }}
-            HDF5=${{ matrix.hdf5_versions }}
-            MOAB=${{ matrix.moab_versions }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}-moab_${{ matrix.moab_versions }}
-
-
-
-
-
-
 
 
 
