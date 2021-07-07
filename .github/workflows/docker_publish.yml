@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build-and-push-image_1:
+  build_and_push_image_1:
 
     runs-on: ubuntu-latest
     strategy:
@@ -42,9 +42,9 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
-  build-and-push-image_2:
+  build_and_push_image_2:
     runs-on: ubuntu-latest
-    needs: build-and-push-image_1
+    needs: build_and_push_image_1
     strategy:
       matrix:
        ubuntu_versions : [
@@ -71,7 +71,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Dockerfile_3_moab
+      - name: Build and push layer 2
         uses: docker/build-push-action@v2
         with:
           file: CI/all.Dockerfile
@@ -81,7 +81,7 @@ jobs:
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
             COMPILER=${{ matrix.compiler }}
-          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext
 
     #    hdf5_versions : [
     #      1.10.4,
