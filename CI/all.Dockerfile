@@ -4,13 +4,9 @@ ARG HDF5=1.10.4
 # MOAB Commit: 9c96d17 (Merged commit of @pshriwise thread fix)
 ARG MOAB=9c96d17
 
+FROM ubuntu:${UBUNTU_VERSION} as base
 
 LABEL UBUNTU_VERSION=$UBUNTU_VERSION
-LABEL COMPILER=$COMPILER
-LABEL HDF5=$HDF5
-LABEL MOAB=$MOAB
-
-FROM ubuntu:${UBUNTU_VERSION} as base
 
 # Use bash as the default shell
 SHELL ["/bin/bash", "-c"]
@@ -34,6 +30,8 @@ ENV install_dir=/root/opt
 FROM base as external_deps
 # FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}
 
+LABEL COMPILER=$COMPILER
+
 #setting the COMPILER variable
 ENV COMPILER=${COMPILER}
 
@@ -55,6 +53,8 @@ RUN /root/etc/CI/docker/build_embree.sh
 FROM external_deps as hdf5
 # FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext
 
+LABEL HDF5=$HDF5
+
 # Set HDF5 env variable
 ENV hdf5_build_dir=${build_dir}/hdf5
 ENV hdf5_install_dir=${install_dir}/hdf5
@@ -68,6 +68,8 @@ RUN /root/etc/CI/docker/build_hdf5.sh
 
 FROM hdf5 as moab
 # FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext-hdf5_${HDF5}
+
+LABEL MOAB=$MOAB
 
 # Set MOAB env variable
 ENV moab_build_dir=${build_dir}/moab
