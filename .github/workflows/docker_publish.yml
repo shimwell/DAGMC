@@ -30,7 +30,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push base
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_0_base
@@ -41,7 +41,7 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
-      - name: Build and push
+      - name: Build and push housekeeping
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_1_housekeeping
@@ -82,7 +82,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push external_deps
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_1_external_deps
@@ -127,7 +127,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push hdf5
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_2_hdf5
@@ -178,7 +178,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push moab
         uses: docker/build-push-action@v2
         with:
           file: CI/Dockerfile_3_moab
