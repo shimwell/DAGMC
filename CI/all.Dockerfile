@@ -27,8 +27,8 @@ ENV build_dir=/root/build_dir
 ENV install_dir=/root/opt
 
 
-FROM base as external_deps
-# FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}
+# FROM base as external_deps  # TODO looking into docker layer caching
+FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION} as external_deps 
 
 LABEL COMPILER=$COMPILER
 
@@ -49,9 +49,8 @@ ENV double_down_install_dir=${install_dir}/double-down/
 RUN /root/etc/CI/docker/build_embree.sh
 
 
-
-FROM external_deps as hdf5
-# FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext
+# FROM external_deps as hdf5  # TODO looking into docker layer caching
+FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext as hdf5
 
 LABEL HDF5=$HDF5
 
@@ -66,8 +65,8 @@ RUN /root/etc/CI/docker/build_hdf5.sh
 
 
 
-FROM hdf5 as moab
-# FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext-hdf5_${HDF5}
+# FROM hdf5 as moab  # TODO looking into docker layer caching
+FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext-hdf5_${HDF5} as moab
 
 LABEL MOAB=$MOAB
 

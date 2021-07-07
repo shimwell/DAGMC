@@ -15,11 +15,6 @@ jobs:
 
     strategy:
       matrix:
-
-      # include:
-      #   - ubuntu_versions: 16.04
-      #     targets: base
-
        ubuntu_versions : [
           16.04,
           18.04,
@@ -38,7 +33,7 @@ jobs:
        ]
 
 
-    steps:
+    login:
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -52,8 +47,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+    build_layer_1:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
+        needs: login
         with:
           file: CI/all.Dockerfile
           context: .
@@ -63,8 +60,10 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
+    build_layer_2:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
+        needs: build_layer_1
         with:
           file: CI/all.Dockerfile
           context: .
@@ -75,8 +74,10 @@ jobs:
             COMPILER=${{ matrix.compiler }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
 
+    build_layer_3:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
+        needs: build_layer_2
         with:
           file: CI/all.Dockerfile
           context: .
@@ -88,8 +89,10 @@ jobs:
             HDF5=${{ matrix.hdf5_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
 
+    build_layer_4:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
+        needs: build_layer_3
         with:
           file: CI/all.Dockerfile
           context: .
