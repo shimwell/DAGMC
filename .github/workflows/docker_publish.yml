@@ -129,7 +129,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v2
-        needs: build_layer_2
         with:
           file: CI/Dockerfile_2_hdf5
           context: .
@@ -181,7 +180,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v2
-        needs: build_layer_3
         with:
           file: CI/Dockerfile_3_moab
           context: .
