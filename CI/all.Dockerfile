@@ -1,5 +1,5 @@
 ARG UBUNTU_VERSION=18.04
-# ARG COMPILER=gcc
+
 
 FROM ubuntu:${UBUNTU_VERSION} as base
 
@@ -23,11 +23,11 @@ ENV docker_env=/root/etc/CI/env.sh
 ENV build_dir=/root/build_dir
 ENV install_dir=/root/opt
 
-
+ARG COMPILER=gcc
 # FROM base as external_deps  # TODO looking into docker layer caching
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION} as external_deps 
 
-ARG COMPILER=gcc
+
 LABEL COMPILER=$COMPILER
 
 #setting the COMPILER variable
