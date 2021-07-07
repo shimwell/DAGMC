@@ -63,7 +63,6 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
-    steps:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
         with:
@@ -76,7 +75,6 @@ jobs:
             COMPILER=${{ matrix.compiler }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
 
-    steps:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
         with:
@@ -90,8 +88,6 @@ jobs:
             HDF5=${{ matrix.hdf5_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}-ext-hdf5_${{ matrix.hdf5_versions}}
 
-
-    steps:
       - name: Build and push Dockerfile_3_moab
         uses: docker/build-push-action@v2
         with:
