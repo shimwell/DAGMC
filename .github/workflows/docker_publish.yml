@@ -2,7 +2,7 @@ on:
   push:
     paths:
       - 'CI/*'
-        '.github/workflows/docker_publish.yml'
+      - '.github/workflows/docker_publish.yml'
 
 jobs:
   build-and-push-image:
