@@ -30,6 +30,7 @@ ENV install_dir=/root/opt
 # FROM base as external_deps  # TODO looking into docker layer caching
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION} as external_deps 
 
+ARG COMPILER=gcc
 LABEL COMPILER=$COMPILER
 
 #setting the COMPILER variable
