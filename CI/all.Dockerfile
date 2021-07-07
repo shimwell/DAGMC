@@ -1,8 +1,5 @@
 ARG UBUNTU_VERSION=18.04
-ARG COMPILER=gcc
-ARG HDF5=1.10.4
-# MOAB Commit: 9c96d17 (Merged commit of @pshriwise thread fix)
-ARG MOAB=9c96d17
+# ARG COMPILER=gcc
 
 FROM ubuntu:${UBUNTU_VERSION} as base
 
@@ -53,6 +50,7 @@ RUN /root/etc/CI/docker/build_embree.sh
 # FROM external_deps as hdf5  # TODO looking into docker layer caching
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext as hdf5
 
+ARG HDF5=1.10.4
 LABEL HDF5=$HDF5
 
 # Set HDF5 env variable
@@ -69,6 +67,8 @@ RUN /root/etc/CI/docker/build_hdf5.sh
 # FROM hdf5 as moab  # TODO looking into docker layer caching
 FROM ghcr.io/shimwell/dagmc-ci-ubuntu-${UBUNTU_VERSION}-${COMPILER}-ext-hdf5_${HDF5} as moab
 
+# MOAB Commit: 9c96d17 (Merged commit of @pshriwise thread fix)
+ARG MOAB=9c96d17
 LABEL MOAB=$MOAB
 
 # Set MOAB env variable
