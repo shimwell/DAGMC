@@ -5,8 +5,19 @@ on:
       - '.github/workflows/docker_publish.yml'
 
 jobs:
-  login:
+
+  build-and-push-image_1:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -20,22 +31,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
-  build-and-push-image_1:
-
-    runs-on: ubuntu-latest
-    needs: login
-    strategy:
-      matrix:
-       ubuntu_versions : [
-          16.04,
-          18.04,
-          ]
-
-    steps:
       - name: Build and push layer 1
         uses: docker/build-push-action@v2
-        needs: steps
         with:
           file: CI/all.Dockerfile
           context: .
@@ -45,12 +42,48 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
           tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}
 
+  build-and-push-image_2:
+    runs-on: ubuntu-latest
+    needs: build-and-push-image_1
+    strategy:
+      matrix:
+       ubuntu_versions : [
+          16.04,
+          18.04,
+          ]
+       compiler : [
+          gcc,
+          clang,
+          ]
 
+    steps:
 
-    #    compiler : [
-    #       gcc,
-    #       clang,
-    #       ]
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Dockerfile_3_moab
+        uses: docker/build-push-action@v2
+        needs: build_layer_1
+        with:
+          file: CI/all.Dockerfile
+          context: .
+          target: external_deps
+          push: true
+          build-args: |
+            UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
+            COMPILER=${{ matrix.compiler }}
+          tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
+
     #    hdf5_versions : [
     #      1.10.4,
     #    ]
@@ -59,22 +92,6 @@ jobs:
     #      develop,
     #      master,
     #    ]
-
-
-
-    # build_layer_2:
-    #   - name: Build and push Dockerfile_3_moab
-    #     uses: docker/build-push-action@v2
-    #     needs: build_layer_1
-    #     with:
-    #       file: CI/all.Dockerfile
-    #       context: .
-    #       target: external_deps
-    #       push: true
-    #       build-args: |
-    #         UBUNTU_VERSION=${{ matrix.ubuntu_versions }}
-    #         COMPILER=${{ matrix.compiler }}
-    #       tags: ghcr.io/shimwell/dagmc-ci-ubuntu-${{ matrix.ubuntu_versions }}-${{ matrix.compiler}}
 
     # build_layer_3:
     #   - name: Build and push Dockerfile_3_moab
