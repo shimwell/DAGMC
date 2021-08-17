@@ -17,6 +17,7 @@ jobs:
         ubuntu_versions : [
           18.04,
           20.04,
+          21.04,
           ]
     name: Ubuntu ${{ matrix.ubuntu_versions }} basics deps
 
