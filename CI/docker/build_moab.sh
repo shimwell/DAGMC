@@ -4,12 +4,6 @@ set -ex
 
 source ${docker_env}
 
-if [ ${MOAB_VERSION} == "master" ] || [ ${MOAB_VERSION} == "develop" ]; then
-  branch=${MOAB_VERSION}
-else
-  branch=${MOAB_VERSION}
-fi
-
 rm -rf ${moab_build_dir}/bld ${moab_install_dir}
 mkdir -p ${moab_build_dir}/bld
 cd ${moab_build_dir}
