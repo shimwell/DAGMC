@@ -15,7 +15,6 @@ do
   esac
 done
 
-ubuntu_versions="16.04 18.04"
 compilers="gcc clang"
 for ubuntu_version in ${ubuntu_versions}; do
   image_name="svalinn/dagmc-ci-ubuntu-${ubuntu_version}"

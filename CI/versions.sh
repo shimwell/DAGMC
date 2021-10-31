@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# Ubuntu versions
+export ubuntu_versions="16.04 18.04"
+
 # HDF5 VERSIONS VARIABLE
 export HDF5_VERSION=1.10.4
 export HDF5_VERSION_major=1.10
 export hdf5_1_10_4_shasum=8f60dc4dd6ab5fcd23c750d1dc5bca3d0453bdce5c8cdaf0a4a61a9d1122adb2
-
 
 # Geant4 version and corresponding SHASUM
 export geant4_version=10.5.1

@@ -38,6 +38,7 @@ RUN apt-get -y update; \
 RUN mkdir -p /root/etc/
 COPY CI/ /root/etc/CI
 ENV docker_env=/root/etc/CI/env.sh
+ENV versions_env=/root/etc/CI/versions.sh
 
 ENV build_dir=/root/build_dir
 ENV install_dir=/root/opt
