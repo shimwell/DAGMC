@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ubuntu versions
-export ubuntu_versions="16.04 18.04"
-
 # HDF5 VERSIONS VARIABLE
 export HDF5_VERSION=1.10.4
 export HDF5_VERSION_major=1.10

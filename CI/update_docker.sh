@@ -15,6 +15,10 @@ do
   esac
 done
 
+# Ubuntu versions
+export ubuntu_versions="16.04 18.04"
+export housekeeping_ubuntu_versions="18.04"
+
 compilers="gcc clang"
 for ubuntu_version in ${ubuntu_versions}; do
   image_name="svalinn/dagmc-ci-ubuntu-${ubuntu_version}"
@@ -48,5 +52,5 @@ for ubuntu_version in ${ubuntu_versions}; do
 done
 
 # Building image for houe keeping
-docker build -t svalinn/dagmc-ci-ubuntu-18.04-housekeeping -f CI/Dockerfile_1_housekeeping .
-if [ "$PUSH" = true ]; then docker push svalinn/dagmc-ci-ubuntu-18.04-housekeeping; fi
+docker build -t svalinn/dagmc-ci-ubuntu-${housekeeping_ubuntu_versions}-housekeeping -f CI/Dockerfile_1_housekeeping .
+if [ "$PUSH" = true ]; then docker push svalinn/dagmc-ci-ubuntu-${housekeeping_ubuntu_versions}-housekeeping; fi
