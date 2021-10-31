@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ${versions.sh}
+source ${versions_env}
 
 export ci_jobs=`grep -c processor /proc/cpuinfo`
 
