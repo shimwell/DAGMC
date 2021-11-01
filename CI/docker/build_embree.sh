@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ex
 
+source ${docker_env}
+
 # Embree Variables
 EMBREE_REPO='https://github.com/embree/embree'
 EMBREE_INSTALL_DIR=$HOME/EMBREE/

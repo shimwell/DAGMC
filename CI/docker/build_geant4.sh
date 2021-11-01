@@ -2,10 +2,10 @@
 
 set -ex
 
+source ${docker_env}
+
 export geant4_basename=geant4-v${geant4_version}
 export geant4_tarball=${geant4_basename}.tar.gz
-
-source ${docker_env}
 
 rm -rf ${geant4_build_dir}/bld ${geant4_install_dir}
 mkdir -p ${geant4_build_dir}/bld
