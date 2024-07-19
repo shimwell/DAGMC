@@ -18,7 +18,7 @@ Next version
   * Inline documentation improvements (#945)
   * Streamline dependencies of docker CI images (#951 #952)
   * Update github actions to newer versions as necessary (#958)
-  * CMake error message upddate ()
+  * CMake error message update (#960)
 
 v3.2.3
 ====================
