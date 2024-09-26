@@ -15,7 +15,7 @@ macro (dagmc_setup_build)
   if (NOT CMAKE_BUILD_TYPE STREQUAL "Release" AND
       NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND
       NOT CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    message(FATAL_ERROR "Specified CMAKE_BUILD_TYPE is invalid; valid options are Release, Debug, RelWithDebInfo")
+    message(FATAL_ERROR "Specified CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} is invalid; valid options are Release, Debug, RelWithDebInfo")
   endif ()
   string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
   message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
