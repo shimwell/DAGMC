@@ -89,11 +89,13 @@ macro (dagmc_setup_options)
   endif()
 
 if (DOUBLE_DOWN)
+  message(STATUS "DOUBLE_DOWN has been enabled for ray tracing. Searching for package...")
   find_package(DOUBLE_DOWN REQUIRED)
   if (dd_VERSION VERSION_LESS 1.1.0)
     message(FATAL_ERROR "Discovered Double Down Version: ${DOUBLE_DOWN_VERSION}. \
     Please update Double Down to version 1.1.0 or greater.")
   endif()
+  message(STATUS "Found DOUBLE_DOWN.")
 endif()
 
 
