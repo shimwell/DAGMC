@@ -9,6 +9,7 @@ Next version
 
 **Changed:**
 
+  * Adding info messages to CMake output for double down (#962)
   * Update hdf5 to v1.14.3 from v1.10.4 (#931 #933)
   * Ensure implicit complement handle is placed at the back of DAGMC volume indices (#935)
   * Update MOAB to 5.5.1 from 5.3.0 (#939 #940)
