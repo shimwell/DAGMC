@@ -59,9 +59,7 @@ if(BUILD_MCNP5 OR BUILD_MCNP6)
   enable_language(Fortran)
 endif()
 
-
-# Try to find MOAB
-# find_package(MOAB QUIET)
+# find_package(MOAB REQUIRED)
 
 if (NOT MOAB_FOUND)
   include(FetchContent)
