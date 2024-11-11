@@ -67,7 +67,7 @@ if (NOT MOAB_FOUND)
   FetchContent_Declare(
     moab
     GIT_REPOSITORY https://bitbucket.org/fathomteam/moab.git
-    GIT BRANCH master
+    GIT_BRANCH master
     # GIT_TAG        5.5.1
   )
   FetchContent_MakeAvailable(moab)
