@@ -20,6 +20,7 @@ Next version
   * Streamline dependencies of docker CI images (#951 #952)
   * Update github actions to newer versions as necessary (#958)
   * CMake error message update (#960)
+  * Added options to CMakeLists
 
 v3.2.3
 ====================
