@@ -1,5 +1,5 @@
 project(DAGMC)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 enable_language(CXX)
 
 # Set DAGMC version
@@ -59,7 +59,26 @@ if(BUILD_MCNP5 OR BUILD_MCNP6)
   enable_language(Fortran)
 endif()
 
-find_package(MOAB REQUIRED)
+include(FetchContent)
+
+# Try to find MOAB
+# find_package(MOAB QUIET)
+
+if (NOT MOAB_FOUND)
+  message(STATUS "MOAB not found. Fetching MOAB...")
+  FetchContent_Declare(
+    moab
+    GIT_REPOSITORY https://bitbucket.org/fathomteam/moab.git
+    GIT BRANCH master
+    # GIT_TAG        5.5.1
+  )
+  FetchContent_MakeAvailable(moab)
+  add_subdirectory(${moab_SOURCE_DIR} ${moab_BINARY_DIR}) # MOAB repository is not properly configured for a FetchContent build
+  # Set MOAB_DIR to the fetched content
+  set(MOAB_DIR ${moab_SOURCE_DIR})
+  find_package(MOAB REQUIRED)
+endif()
+
 find_package(OpenMP)
 
 dagmc_setup_flags()
