@@ -59,12 +59,12 @@ if(BUILD_MCNP5 OR BUILD_MCNP6)
   enable_language(Fortran)
 endif()
 
-include(FetchContent)
 
 # Try to find MOAB
 # find_package(MOAB QUIET)
 
 if (NOT MOAB_FOUND)
+  include(FetchContent)
   message(STATUS "MOAB not found. Fetching MOAB...")
   FetchContent_Declare(
     moab
