@@ -66,14 +66,19 @@ if (NOT MOAB_FOUND)
   message(STATUS "MOAB not found. Fetching MOAB...")
   FetchContent_Declare(
     moab
-    GIT_REPOSITORY https://bitbucket.org/fathomteam/moab.git
-    GIT_BRANCH master
+    # making use of branch on fork as it has a one line change that help this fetch command work
+    # GIT_REPOSITORY https://bitbucket.org/fathomteam/moab.git
+    # GIT_BRANCH master
     # GIT_TAG        5.5.1
+    GIT_REPOSITORY https://bitbucket.org/moab-fork/moab.git
+    GIT_TAG Jonathan-Shimwell/adding-current-to-dir
+    GIT_SHALLOW TRUE
   )
+  
   FetchContent_MakeAvailable(moab)
-  add_subdirectory(${moab_SOURCE_DIR} ${moab_BINARY_DIR}) # MOAB repository is not properly configured for a FetchContent build
+  add_subdirectory(${moab_SOURCE_DIR} ${moab_BINARY_DIR}/moab-build)
   # Set MOAB_DIR to the fetched content
-  set(MOAB_DIR ${moab_SOURCE_DIR})
+  set(MOAB_DIR ${moab_BINARY_DIR}/moab-build)
   find_package(MOAB REQUIRED)
 endif()
 
