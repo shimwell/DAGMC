@@ -127,5 +127,5 @@ If you have installed the dependencies correctly, you are now ready to
 `install DAGMC <dagmc.html>`_.
 
 ..  _HDF5: http://www.hdfgroup.org/HDF5
-..  _MOAB: http://bitbucket.org/fathomteam/moab
+..  _MOAB: https://sigma.mcs.anl.gov/moab-library/
 ..  _Eigen3: http://eigen.tuxfamily.org/index.php
