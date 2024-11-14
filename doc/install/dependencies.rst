@@ -73,7 +73,9 @@ Debian linux users can install the latest HDF5 release with:
 Redhat linux users can do likewise with:
 ::
 
-    $ sudo yum install libhdf5-dev
+    $ sudo yum install -y epel-release
+    $ sudo yum config-manager --enable epel
+    $ sudo yum install hdf5-devel
 
 MOAB installation
 ~~~~~~~~~~~~~~~~~
