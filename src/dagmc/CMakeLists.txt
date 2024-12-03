@@ -14,6 +14,10 @@ include_directories(${CMAKE_BINARY_DIR}/src/dagmc)
 
 dagmc_install_library(dagmc)
 
+if(DDL_INSTALL_DEPS)
+  add_dependencies(dagmc-shared MOAB)
+  target_link_libraries(dagmc-shared PUBLIC ${MOAB_INSTALL_PREFIX}/lib64/libMOAB.so)
+endif()
 add_subdirectory(tools)
 
 if (BUILD_TESTS)
