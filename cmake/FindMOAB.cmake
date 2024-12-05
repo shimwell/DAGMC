@@ -15,11 +15,11 @@ if (MOAB_CMAKE_CONFIG)
   message(STATUS "MOAB_CMAKE_CONFIG: ${MOAB_CMAKE_CONFIG}")
   include(${MOAB_CMAKE_CONFIG})
 elseif (DDL_INSTALL_DEPS)
-  message(STATUS "MOAB will be downloaded and built")
   include(ExternalProject)
-  # Configure MOAB
+   # Configure MOAB
   if(NOT MOAB_VERSION)
     set(MOAB_VERSION "5.5.1")
+  message(STATUS "MOAB version ${MOAB_VERSION} will be downloaded and built")
   endif()
   set(CMAKE_INSTALL_LIBDIR "lib")
   SET(MOAB_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/moab")
