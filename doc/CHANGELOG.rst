@@ -21,6 +21,7 @@ Next version
   * Update github actions to newer versions as necessary (#958)
   * CMake error message update (#960)
   * Updated documentation to build dependencies (#963)
+  * Updated CMake version required to 3.18 (#970)
 
 v3.2.3
 ====================
