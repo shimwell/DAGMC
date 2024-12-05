@@ -19,8 +19,9 @@ elseif (DDL_INSTALL_DEPS)
    # Configure MOAB
   if(NOT MOAB_VERSION)
     set(MOAB_VERSION "5.5.1")
-  message(STATUS "MOAB version ${MOAB_VERSION} will be downloaded and built")
   endif()
+  message(STATUS "MOAB version ${MOAB_VERSION} will be downloaded and built")
+
   set(CMAKE_INSTALL_LIBDIR "lib")
   SET(MOAB_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/moab")
   set(MOAB_ROOT "${CMAKE_BINARY_DIR}/moab")
