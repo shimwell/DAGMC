@@ -10,6 +10,7 @@ MACRO (moab_pull_make moab_version)
     set(MOAB_INCLUDE_DIRS "${MOAB_INSTALL_PREFIX}/include")
     set(MOAB_LIBRARY_DIRS "${MOAB_INSTALL_PREFIX}/lib")
     message("MOAB_LIBRARY_DIRS: ${MOAB_LIBRARY_DIRS}")
+    MEsSAGE("CMAKE_SHARED_LIBRARY_SUFFIX: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
     set(MOAB_LIBRARIES_SHARED "")
     ExternalProject_Add(MOAB_ep
       PREFIX ${MOAB_ROOT}   
@@ -32,7 +33,7 @@ MACRO (moab_pull_make moab_version)
     add_library(MOAB INTERFACE)
 
     target_include_directories(MOAB SYSTEM INTERFACE ${MOAB_INCLUDE_DIRS})
-    target_link_libraries(MOAB INTERFACE ${MOAB_LIBRARY_DIRS}/libMOAB.so)
+    target_link_libraries(MOAB INTERFACE ${MOAB_LIBRARY_DIRS}/libMOAB${CMAKE_SHARED_LIBRARY_SUFFIX})
     add_dependencies(MOAB MOAB_ep)
     install(TARGETS MOAB LIBRARY DESTINATION ${MOAB_LIBRARY_DIRS}
                         PUBLIC_HEADER DESTINATION ${INSTALL_INCLUDE_DIR})

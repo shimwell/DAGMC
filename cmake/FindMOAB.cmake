@@ -25,13 +25,13 @@ if (DDL_INSTALL_DEPS)
 # Back to normal behavior
 elseif (MOAB_CMAKE_CONFIG)
   set(MOAB_CMAKE_CONFIG ${MOAB_CMAKE_CONFIG}/MOABConfig.cmake)
+  include(${MOAB_CMAKE_CONFIG})
   message(STATUS "MOAB_CMAKE_CONFIG: ${MOAB_CMAKE_CONFIG}")
 else ()
   message(FATAL_ERROR "Could not find MOAB. Set -DMOAB_DIR=<MOAB_DIR> when running cmake or use the $MOAB_DIR environment variable.")
 endif ()
 
 # Find HDF5
-include(${MOAB_CMAKE_CONFIG})
 set(ENV{PATH} "${HDF5_DIR}:$ENV{PATH}")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_SHARED_LIBRARY_SUFFIX})
 find_package(HDF5 REQUIRED)

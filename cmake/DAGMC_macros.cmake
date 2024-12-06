@@ -256,7 +256,7 @@ macro (dagmc_install_library lib_name)
     # Required to ensure that MOAB is built before DAGMC and to properly link against MOAB
     if(DDL_INSTALL_DEPS)
       add_dependencies(${lib_name}-shared MOAB)
-      target_link_libraries(${lib_name}-shared PUBLIC ${MOAB_LIBRARY_DIRS}/libMOAB.so)
+      target_link_libraries(${lib_name}-shared PUBLIC ${MOAB_LIBRARY_DIRS}/libMOAB${CMAKE_SHARED_LIBRARY_SUFFIX})
     endif()
   endif ()
 
