@@ -21,6 +21,7 @@ Next version
   * Update github actions to newer versions as necessary (#958)
   * CMake error message update (#960)
   * Updated documentation to build dependencies (#963)
+  * Allow download from cmake and compilation at build time of MOAB (#969)
 
 v3.2.3
 ====================

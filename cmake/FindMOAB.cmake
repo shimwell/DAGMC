@@ -10,61 +10,28 @@ find_path(MOAB_CMAKE_CONFIG
   PATHS ${MOAB_SEARCH_DIRS}
   NO_DEFAULT_PATH
 )
-if (MOAB_CMAKE_CONFIG)
+
+# First check if we are forcing the download of MOAB
+if (DDL_INSTALL_DEPS)
+  IF(DAGMC_BUILD_STATIC_LIBS)
+    message(FATAL_ERROR "DDL_INSTALL_DEPS is ONLY compatible with shared libraries.")
+  ENDIF()
+  IF(NOT MOAB_VERSION)
+    SET(MOAB_VERSION "5.5.1")
+  ENDIF()
+  include(MOAB_PullAndMake)
+  moab_pull_make(${MOAB_VERSION})
+
+# Back to normal behavior
+elseif (MOAB_CMAKE_CONFIG)
   set(MOAB_CMAKE_CONFIG ${MOAB_CMAKE_CONFIG}/MOABConfig.cmake)
   message(STATUS "MOAB_CMAKE_CONFIG: ${MOAB_CMAKE_CONFIG}")
-  include(${MOAB_CMAKE_CONFIG})
-elseif (DDL_INSTALL_DEPS)
-  include(ExternalProject)
-   # Configure MOAB
-  if(NOT MOAB_VERSION)
-    set(MOAB_VERSION "5.5.1")
-  endif()
-  message(STATUS "MOAB version ${MOAB_VERSION} will be downloaded and built")
-
-  set(CMAKE_INSTALL_LIBDIR "lib")
-  SET(MOAB_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/moab")
-  set(MOAB_ROOT "${CMAKE_BINARY_DIR}/moab")
-  set(MOAB_INCLUDE_DIRS "${MOAB_INSTALL_PREFIX}/include")
-  set(MOAB_LIBRARY_DIRS "${MOAB_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-  set(MOAB_LIBRARIES_SHARED "")
-  ExternalProject_Add(MOAB_ep
-    PREFIX ${MOAB_ROOT}   
-    GIT_REPOSITORY https://bitbucket.org/fathomteam/moab.git
-    GIT_TAG ${MOAB_VERSION}
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-      -DBUILD_SHARED_LIBS:BOOL=ON
-      -DENABLE_HDF5:BOOL=ON
-      -DHDF5_ROOT:PATH=${HDF5_ROOT}
-      -DEIGEN3_DIR:PATH=${EIGEN3_INCLUDE_DIRS}
-      -DENABLE_BLASLAPACK:BOOL=OFF
-      -DENABLE_FORTRAN:BOOL=OFF
-      -DCMAKE_MACOSX_RPATH:BOOL=ON
-    DOWNLOAD_EXTRACT_TIMESTAMP true
-    BUILD_BYPRODUCTS "${MOAB_LIBRARY_DIRS}/*${CMAKE_SHARED_LIBRARY_SUFFIX}*"
-    # Set devel space as install prefix
-    INSTALL_DIR "${MOAB_INSTALL_PREFIX}"
-  )
-  add_library(MOAB INTERFACE)
-  # list(APPEND CMAKE_MODULE_PATH ${MOAB_LIBRARY_DIRS}/cmake)
-  message(STATUS "CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}") 
-  message(STATUS "MOAB_LIBRARY_DIRS=${MOAB_LIBRARY_DIRS}") 
-  message(STATUS "MOAB_LIBRARY_DIRS=${MOAB_LIBRARY_DIRS}")
-  target_include_directories(MOAB SYSTEM INTERFACE ${MOAB_INCLUDE_DIRS})
-  target_link_libraries(MOAB INTERFACE ${MOAB_INSTALL_PREFIX}/lib64/libMOAB.so)
-  add_dependencies(MOAB MOAB_ep)
-  install(TARGETS MOAB LIBRARY DESTINATION ${MOAB_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-                      PUBLIC_HEADER DESTINATION ${INSTALL_INCLUDE_DIR})
-
-  include_directories(${MOAB_INCLUDE_DIRS})
-  link_directories(${MOAB_LIBRARY_DIRS})
-  include_directories(${EIGEN3_INCLUDE_DIRS})
 else ()
   message(FATAL_ERROR "Could not find MOAB. Set -DMOAB_DIR=<MOAB_DIR> when running cmake or use the $MOAB_DIR environment variable.")
 endif ()
 
 # Find HDF5
+include(${MOAB_CMAKE_CONFIG})
 set(ENV{PATH} "${HDF5_DIR}:$ENV{PATH}")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_SHARED_LIBRARY_SUFFIX})
 find_package(HDF5 REQUIRED)
@@ -117,11 +84,13 @@ message(STATUS "MOAB_LIBRARY_DIRS: ${MOAB_LIBRARY_DIRS}")
 message(STATUS "MOAB_LIBRARIES_SHARED: ${MOAB_LIBRARIES_SHARED}")
 message(STATUS "MOAB_LIBRARIES_STATIC: ${MOAB_LIBRARIES_STATIC}")
 
-if (MOAB_INCLUDE_DIRS AND (MOAB_LIBRARIES_SHARED OR NOT BUILD_SHARED_LIBS) AND
+if(DDL_INSTALL_DEPS)
+  message(STATUS "MOAB will be downloaded and built at make time")
+elseif (MOAB_INCLUDE_DIRS AND (MOAB_LIBRARIES_SHARED OR NOT BUILD_SHARED_LIBS) AND
     (MOAB_LIBRARIES_STATIC OR NOT BUILD_STATIC_LIBS))
   message(STATUS "Found MOAB")
-else()
-  # message(FATAL_ERROR "Could not find MOAB")
+else ()
+  message(FATAL_ERROR "Could not find MOAB")
 endif ()
 
 include_directories(${MOAB_INCLUDE_DIRS})

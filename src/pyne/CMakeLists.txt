@@ -34,6 +34,3 @@ if(NOT (${HDF5_VERSION} VERSION_LESS 1.12.0))
  endif()
 
 dagmc_install_library(pyne_dagmc)
-if(DDL_INSTALL_DEPS)
-  add_dependencies(pyne_dagmc-shared MOAB)
-endif()

@@ -253,6 +253,11 @@ macro (dagmc_install_library lib_name)
             EXPORT DAGMCTargets
             LIBRARY DESTINATION ${INSTALL_LIB_DIR}
             PUBLIC_HEADER DESTINATION ${INSTALL_INCLUDE_DIR})
+    # Required to ensure that MOAB is built before DAGMC and to properly link against MOAB
+    if(DDL_INSTALL_DEPS)
+      add_dependencies(${lib_name}-shared MOAB)
+      target_link_libraries(${lib_name}-shared PUBLIC ${MOAB_LIBRARY_DIRS}/libMOAB.so)
+    endif()
   endif ()
 
   if (BUILD_STATIC_LIBS)

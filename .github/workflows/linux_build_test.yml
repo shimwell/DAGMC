@@ -50,6 +50,9 @@ jobs:
           5.4.1,
           5.5.1,
         ]
+        ddl_deps : [
+          off,
+        ]
         geant4_version : [
           10.7.4,
           11.1.2
@@ -58,6 +61,14 @@ jobs:
           off,
           v1.1.0,
         ]
+        include:
+          - ubuntu_version: 22.04
+            compiler: gcc
+            hdf5_version: 1.14.3
+            moab_version: 5.4.1
+            ddl_deps: on
+            geant4_version: off
+            double_down_version: off
 
     container:
       image: ghcr.io/svalinn/dagmc-ci-ubuntu-${{
@@ -88,6 +99,7 @@ jobs:
           cmake ../ \
               -DMOAB_DIR=${moab_install_dir} \
               -DBUILD_GEANT4=$([ "${{ matrix.geant4_version }}" != "off" ] && echo "ON" || echo "OFF") \
+              -DDDL_INSTALL_DEPS=$([ "${{ matrix.ddl_deps }}" != "on" ] && echo "OFF" || echo "ON -DHDF5_ROOT=${hdf5_install_dir}") \
               -DGEANT4_DIR=${geant4_install_dir} \
               -DBUILD_CI_TESTS=ON \
               -DBUILD_MW_REG_TESTS=OFF \
