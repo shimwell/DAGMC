@@ -73,6 +73,9 @@ macro (dagmc_setup_options)
 
   option(DOUBLE_DOWN "Enable ray tracing with Embree via double down" OFF)
 
+  option(DDL_INSTALL_DEPS "Enable automatic downloading of MOAB dependency" ON)
+
+
   if (BUILD_ALL)
     set(BUILD_MCNP5  ON)
     set(BUILD_MCNP6  ON)
